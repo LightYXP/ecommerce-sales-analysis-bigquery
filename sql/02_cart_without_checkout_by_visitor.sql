@@ -1,5 +1,5 @@
--- Question: Which visitors had a cart action but no checkout action?
--- Visitor-level exploration, not a validated cart-abandonment rate.
+-- Identify visitors with recorded cart activity and no recorded checkout activity.
+-- This is a visitor-level exploratory filter, not a cart-abandonment rate.
 SELECT
     fullVisitorId,
     COUNT(DISTINCT visitId) AS total_visits,

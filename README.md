@@ -4,7 +4,7 @@ Exploratory SQL analysis of a public e-commerce analytics dataset to examine geo
 
 **Tools:** Google BigQuery · SQL (Standard SQL)  
 **Dataset:** `data-to-insights.ecommerce.all_sessions` (Google public training data)  
-**Status:** SQL exploration documented; metrics need validation. Looker Studio dashboard is not yet included.
+**Status:** Google BigQuery SQL portfolio project; five SQL analyses, result summaries, and visualizations are included. Metrics require validation.
 
 ## Business questions explored
 
@@ -46,7 +46,7 @@ The user-provided BigQuery CSV exports support the following shareable summaries
 
 ![Calculated conversion rates by traffic channel](visualizations/channel_conversion_rate.svg)
 
-**Privacy and integrity notes:** The full visitor-level cart export (28,149 rows of visitor identifiers) has not been published. The source city revenue export has 590 rows; only the top 10 are included in the public summary table, while the SQL query itself analyzes all cities. These SVG charts were reconstructed from the exported CSV values to make the graphics easier to read; they are not screenshots of a Looker Studio dashboard. They visualize preliminary results, **not independently validated revenue or conversion KPIs**.
+**Privacy and integrity notes:** The full visitor-level cart export (28,149 rows of visitor identifiers) has not been published. The source city revenue export has 590 rows; only the top 10 are included in the public summary table, while the SQL query itself analyzes all cities. These SVG charts were reconstructed from the exported CSV values to make the graphics easier to read; they are recreated visualizations based on BigQuery exports. They visualize preliminary results, **not independently validated revenue or conversion KPIs**.
 
 ## Selected observed results
 
@@ -71,7 +71,7 @@ The user-provided BigQuery CSV exports support the following shareable summaries
 
 **Included:** Five SQL scripts transcribed from source screenshots, selected CSV result summaries, and three clean SVG visualizations.  
 **Still to validate:** session-level deduplication and the meaning of revenue, transaction, and conversion fields.  
-**Still to add:** Original query screenshots and the Looker Studio dashboard link/screenshots when available.
+**Optional enhancement:** Add selected original BigQuery query screenshots for reproducibility. A separate Looker Studio dashboard is not part of this project's scope.
 
 ## Dataset attribution
 

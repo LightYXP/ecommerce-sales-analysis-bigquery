@@ -1,6 +1,5 @@
--- Top 10 products by reported units sold.
--- Transcribed from the supplied BigQuery SQL editor screenshot.
--- Validate productQuantity grain to avoid potential duplicate counting.
+-- Rank products by the reported quantities on purchase-action rows.
+-- Check product-quantity grain before interpreting these as final sales units.
 SELECT
     v2ProductName,
     SUM(productQuantity) AS Total_unit_sold

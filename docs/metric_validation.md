@@ -28,6 +28,6 @@ These are review flags, **not corrections** already applied to the original SQL.
 - Visible results include Maze Pen (17,983 units) and Google 22 oz Water Bottle (16,221 units).
 - Verify how units sold were aggregated.
 
-## Looker Studio
-- The supplied images show BigQuery query editor/output, not Looker Studio report pages.
-- Dashboard evidence has not yet been published.
+## Project scope
+- This is a Google BigQuery SQL analysis project, not a Looker Studio dashboard project.
+- Recreated SVG charts are based on exported query results; original BigQuery query screenshots may be added later.

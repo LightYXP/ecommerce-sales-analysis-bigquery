@@ -1,5 +1,5 @@
--- Original screenshot output: 4.48.
--- Validate whether visitId is unique across visitors before treating this as a session KPI.
+-- Share of distinct visitId values matching the query's transaction criteria.
+-- Reported output: 4.48%. Validate the session key and transaction definition.
 SELECT
     ROUND(
         COUNT(DISTINCT CASE

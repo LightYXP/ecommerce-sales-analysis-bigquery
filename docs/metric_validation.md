@@ -11,7 +11,7 @@ These are review flags, **not corrections** already applied to the original SQL.
 - Action codes `3` and `5` are used as cart and checkout markers.
 - The SQL groups by `fullVisitorId`, not unique visitor-session combinations.
 - It identifies visitors with cart activity but no checkout activity in the queried records; it does **not** calculate a confirmed abandonment rate.
-- Raw visitor IDs should not be distributed with the project.
+- Raw visitor IDs should not be distributed with the project. The uploaded visitor-level CSV contained 28,149 records and was deliberately omitted from the public repository; only its aggregate count is shared.
 
 ## Transaction-session percentage
 - The screenshot result is `4.48`, based on distinct `visitId` values.
@@ -24,7 +24,7 @@ These are review flags, **not corrections** already applied to the original SQL.
 - Treat the percentages as unvalidated outputs under the existing query definition.
 
 ## Top 10 products
-- A results screenshot was supplied, but not the original SQL. No SQL query was fabricated.
+- The original SQL editor screenshot is now available and its query was transcribed into `sql/05_top_products_by_units_sold.sql`; the query has not been independently rerun.
 - Visible results include Maze Pen (17,983 units) and Google 22 oz Water Bottle (16,221 units).
 - Verify how units sold were aggregated.
 

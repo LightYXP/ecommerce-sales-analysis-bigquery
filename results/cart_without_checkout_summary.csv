@@ -1,0 +1,2 @@
+metric,value,definition
+visitors_with_cart_and_no_checkout_in_query_result,28149,"Distinct fullVisitorId values returned by the original visitor-level query, based on cart event type 3 and no checkout event type 5; not a validated abandonment rate"

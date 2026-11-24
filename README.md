@@ -24,7 +24,7 @@ The repository contains SQL scripts, selected result summaries, and visualizatio
 | How does calculated conversion vary by traffic channel? | [Channel conversion](sql/04_traffic_channel_conversion.sql) | [Channel summary](results/traffic_channel_conversion.csv) |
 | Which products have the most reported units sold? | [Top products](sql/05_top_products_by_units_sold.sql) | [Top 10 products](results/top10_products.csv) |
 
-The city-level SQL covers all available cities; its visualization highlights the top 10 to improve readability. The cart analysis is visitor-level and is not presented as a validated cart-abandonment rate.
+The city analysis covers all available cities, while its chart displays the top 10 for readability. The cart analysis describes activity by visitor rather than a cart-abandonment rate.
 
 ## Visualizations
 
@@ -44,7 +44,7 @@ The city-level SQL covers all available cities; its visualization highlights the
 
 ![Cart and session activity for 10 anonymized sample visitors](visualizations/cart_activity_sample.svg)
 
-This SVG recreates the supplied BigQuery cart-activity chart with anonymized visitor labels. It is illustrative of the ten displayed visitor records, not a population-level cart-abandonment metric.
+This chart shows ten selected visitor records with anonymized labels. It is not a measure of overall cart abandonment.
 
 These SVG visualizations were created from BigQuery result exports.
 
@@ -56,7 +56,7 @@ These SVG visualizations were created from BigQuery result exports.
 - **Channel conversion:** The reported results included Referral (**11.89%**), Direct (**6.54%**), and Organic Search (**1.56%**).
 - **Cart activity:** The original query returned **28,149 visitor-level records** with cart activity and no recorded checkout action under its filter.
 
-**Metric interpretation:** These are exploratory query outputs, not audited business KPIs. Revenue units, row-level duplication, session identifiers, event definitions, and conversion calculations still need validation. See [Metric definitions and validation](docs/metric_validation.md) before relying on any figure.
+**Methodology note:** Results use the metric definitions in the SQL queries. Repeated source rows and session identifiers can affect calculated totals and percentages. See [Metric definitions and interpretation](docs/metric_validation.md).
 
 ## Repository structure
 
@@ -77,7 +77,7 @@ These SVG visualizations were created from BigQuery result exports.
 3. Run the queries in the [`sql/`](sql/) folder using Standard SQL.
 4. Compare the outputs against the [`results/`](results/) summaries and review metric definitions before drawing conclusions.
 
-The SQL files preserve the original exploratory calculations captured in BigQuery query screenshots and have not been independently re-executed during repository preparation. Running BigQuery queries may incur processing costs.
+SQL scripts reflect the original BigQuery analyses. BigQuery processing charges may apply when running queries.
 
 ## Data handling
 

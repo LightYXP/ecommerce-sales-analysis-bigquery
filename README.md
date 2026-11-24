@@ -1,80 +1,82 @@
-# E-commerce Sales & Conversion Analysis with Google BigQuery
+# E-commerce Sales & Conversion Analysis
 
-Exploratory SQL analysis of a public e-commerce analytics dataset to examine geographic revenue, cart and checkout activity, transaction-session percentages, product rankings, and conversion rates by traffic channel.
+An exploratory SQL portfolio project using **Google BigQuery** to investigate e-commerce sales patterns, customer shopping activity, product performance, and traffic-source conversion.
 
-**Tools:** Google BigQuery · SQL (Standard SQL)  
-**Dataset:** `data-to-insights.ecommerce.all_sessions` (Google public training data)  
-**Status:** Google BigQuery SQL portfolio project; five SQL analyses, result summaries, and visualizations are included. Metrics require validation.
+## Project overview
 
-## Business questions explored
+The project uses the public `data-to-insights.ecommerce.all_sessions` dataset to answer five business questions through SQL queries and visual summaries.
 
-1. Which cities generated the highest reported transaction revenue?
-2. Which visitors added items to cart without a recorded checkout action?
-3. What percentage of sessions were marked as transaction sessions under the query's definition?
-4. Which products appear among the top 10 by reported units sold?
-5. How do calculated conversion rates differ across acquisition channels?
+**Tools:** Google BigQuery · Standard SQL · CSV exports · Data visualization
 
-## Queries
+### Project scope
 
-| Analysis | SQL |
-| --- | --- |
-| City-level reported revenue | [`01_revenue_by_city.sql`](sql/01_revenue_by_city.sql) |
-| Visitors with cart activity but no checkout action | [`02_cart_without_checkout_by_visitor.sql`](sql/02_cart_without_checkout_by_visitor.sql) |
-| Transaction-session percentage | [`03_transaction_session_percentage.sql`](sql/03_transaction_session_percentage.sql) |
-| Traffic-channel conversion | [`04_traffic_channel_conversion.sql`](sql/04_traffic_channel_conversion.sql) |
-| Top products by units sold | [`05_top_products_by_units_sold.sql`](sql/05_top_products_by_units_sold.sql) |
+This project demonstrates exploratory e-commerce data analysis using Google BigQuery and SQL. It includes queries covering revenue distribution, product performance, customer activity, transaction-session activity, and traffic-channel conversion.
 
-The five SQL files were transcribed and formatted from screenshots of completed BigQuery runs. They have **not been independently rerun** as part of preparing this repository.
+The repository contains SQL scripts, selected result summaries, and visualizations created from query outputs.
 
-## Exported result tables and portfolio charts
+## Analyses
 
-The user-provided BigQuery CSV exports support the following shareable summaries:
-
-| Analysis | Result summary | Visualization |
+| Business question | SQL query | Exported results |
 | --- | --- | --- |
-| City revenue | [Top 10 cities (CSV)](results/revenue_by_city_top10.csv) | [Revenue chart](visualizations/top_cities_revenue.svg) |
-| Product sales | [Top 10 products (CSV)](results/top10_products.csv) | [Product chart](visualizations/top_products_units.svg) |
-| Channel performance | [Channel result (CSV)](results/traffic_channel_conversion.csv) | [Conversion rate chart](visualizations/channel_conversion_rate.svg) |
-| Transaction-session percentage | [One-row result (CSV)](results/transaction_session_percentage.csv) | Not charted; reported output: 4.48% |
-| Visitor cart analysis | [Aggregated visitor count (CSV)](results/cart_without_checkout_summary.csv) | No visitor-ID chart published |
+| Which cities have the highest reported revenue? | [Revenue by city](sql/01_revenue_by_city.sql) | [Top 10 cities](results/revenue_by_city_top10.csv) |
+| Which visitors show cart activity without checkout? | [Cart and checkout activity](sql/02_cart_without_checkout_by_visitor.sql) | [Aggregate summary](results/cart_without_checkout_summary.csv) |
+| What proportion of counted sessions show a transaction? | [Transaction-session percentage](sql/03_transaction_session_percentage.sql) | [Single KPI result](results/transaction_session_percentage.csv) |
+| How does calculated conversion vary by traffic channel? | [Channel conversion](sql/04_traffic_channel_conversion.sql) | [Channel summary](results/traffic_channel_conversion.csv) |
+| Which products have the most reported units sold? | [Top products](sql/05_top_products_by_units_sold.sql) | [Top 10 products](results/top10_products.csv) |
 
-### Visual summaries
+The city-level SQL covers all available cities; its visualization highlights the top 10 to improve readability. The cart analysis is visitor-level and is not presented as a validated cart-abandonment rate.
 
-![Reported revenue ranking for 10 cities](visualizations/top_cities_revenue.svg)
+## Visualizations
 
-![Reported units sold for 10 products](visualizations/top_products_units.svg)
+### Top 10 cities by reported revenue
 
-![Calculated conversion rates by traffic channel](visualizations/channel_conversion_rate.svg)
+![Top cities by reported revenue](visualizations/top_cities_revenue.svg)
 
-**Privacy and integrity notes:** The full visitor-level cart export (28,149 rows of visitor identifiers) has not been published. The source city revenue export has 590 rows; only the top 10 are included in the public summary table, while the SQL query itself analyzes all cities. These SVG charts were reconstructed from the exported CSV values to make the graphics easier to read; they are recreated visualizations based on BigQuery exports. They visualize preliminary results, **not independently validated revenue or conversion KPIs**.
+### Top 10 products by reported units sold
 
-## Selected observed results
+![Top products by reported units sold](visualizations/top_products_units.svg)
 
-- The city-revenue result ranked **New York**, **Mountain View**, and **San Francisco** highest among the visible rows. BigQuery displayed values in scientific notation (e.g., `5.830614071E7` for New York after the query's 1,000,000 divisor).
-- The transaction-session percentage query displayed **4.48%**.
-- In the channel breakdown, the screenshot showed calculated conversion rates of **Referral 11.89%**, **Direct 6.54%**, and **Organic Search 1.56%**.
-- The products result showed **Maze Pen** (17,983 units) and **Google 22 oz Water Bottle** (16,221 units) among the leading items.
+### Traffic-channel conversion rates
 
-**Caution:** These are results observed in screenshots, not independently validated business KPIs. Session identifiers, duplicated rows, event semantics, and revenue units must be checked. Read [metric validation notes](docs/metric_validation.md) before citing these numbers.
+![Calculated conversion rates across traffic channels](visualizations/channel_conversion_rate.svg)
 
-## How to reproduce
+These SVG visualizations were created from BigQuery result exports.
 
-1. Open [Google BigQuery Studio](https://console.cloud.google.com/bigquery).
-2. Select a Google Cloud project with BigQuery access and confirm any required billing configuration.
-3. Open a SQL file from the [`sql/`](sql/) folder and run it in a BigQuery editor tab.
-4. Confirm that the public table `data-to-insights.ecommerce.all_sessions` is accessible.
-5. Validate definitions and source-table grain before treating results as business KPIs.
+## Selected findings from the query outputs
 
-> BigQuery query processing may incur costs. This repository contains no credentials or raw visitor-level exports. The included CSVs are summarized query results.
+- **Geographic revenue:** New York, Mountain View, and San Francisco ranked highest in the exported city results.
+- **Product sales:** Maze Pen (17,983) and Google 22 oz Water Bottle (16,221) led the exported top-products ranking.
+- **Transaction sessions:** The query returned **4.48%** under its current counting definition.
+- **Channel conversion:** The reported results included Referral (**11.89%**), Direct (**6.54%**), and Organic Search (**1.56%**).
+- **Cart activity:** The original query returned **28,149 visitor-level records** with cart activity and no recorded checkout action under its filter.
 
-## Work completed and next steps
+**Metric interpretation:** These are exploratory query outputs, not audited business KPIs. Revenue units, row-level duplication, session identifiers, event definitions, and conversion calculations still need validation. See [Metric definitions and validation](docs/metric_validation.md) before relying on any figure.
 
-**Included:** Five SQL scripts transcribed from source screenshots, selected CSV result summaries, and three clean SVG visualizations.  
-**Still to validate:** session-level deduplication and the meaning of revenue, transaction, and conversion fields.  
-**Optional enhancement:** Add selected original BigQuery query screenshots for reproducibility. A separate Looker Studio dashboard is not part of this project's scope.
+## Repository structure
 
-## Dataset attribution
+```text
+.
+├── README.md
+├── sql/                 # Five BigQuery SQL analyses
+├── results/             # Shareable result summaries
+├── visualizations/      # Charts based on exported results
+└── docs/
+    └── metric_validation.md
+```
 
-Uses publicly available Google training data described in [Exploring an Ecommerce Dataset using SQL in Google BigQuery](https://www.skills.google/focuses/49138?parent=catalog). No source data is redistributed.
+## Reproduce the analysis
 
-This is an educational portfolio project, not a claim of commercial business impact.
+1. Open [Google BigQuery](https://console.cloud.google.com/bigquery) with an accessible Google Cloud project.
+2. Confirm that the public table `data-to-insights.ecommerce.all_sessions` is available.
+3. Run the queries in the [`sql/`](sql/) folder using Standard SQL.
+4. Compare the outputs against the [`results/`](results/) summaries and review metric definitions before drawing conclusions.
+
+The SQL files preserve the original exploratory calculations captured in BigQuery query screenshots and have not been independently re-executed during repository preparation. Running BigQuery queries may incur processing costs.
+
+## Data handling
+
+This repository shares aggregated or selected query results, not source data dumps or visitor-level identifiers. The original visitor-level cart export is intentionally excluded.
+
+## Data source
+
+Google public training data: `data-to-insights.ecommerce.all_sessions`. Background: [Exploring an Ecommerce Dataset using SQL in Google BigQuery](https://www.skills.google/focuses/49138?parent=catalog).

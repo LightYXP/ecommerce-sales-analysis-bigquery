@@ -40,6 +40,12 @@ The city-level SQL covers all available cities; its visualization highlights the
 
 ![Calculated conversion rates across traffic channels](visualizations/channel_conversion_rate.svg)
 
+### Cart activity — 10 visitor samples
+
+![Cart and session activity for 10 anonymized sample visitors](visualizations/cart_activity_sample.svg)
+
+This SVG recreates the supplied BigQuery cart-activity chart with anonymized visitor labels. It is illustrative of the ten displayed visitor records, not a population-level cart-abandonment metric.
+
 These SVG visualizations were created from BigQuery result exports.
 
 ## Selected findings from the query outputs

@@ -1,0 +1,11 @@
+.env
+.env.*
+*-service-account.json
+credentials.json
+*.json.key
+.DS_Store
+Thumbs.db
+.vscode/
+__pycache__/
+raw_data/
+*.parquet

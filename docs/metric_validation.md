@@ -1,53 +1,64 @@
-# Metric definitions and validation
+# Metric Definitions and Interpretation
 
-This document describes the current SQL metrics and the checks needed before interpreting them as final business KPIs. The SQL files retain the original exploratory calculations.
+**Dataset:** `data-to-insights.ecommerce.all_sessions`  
+**Platform:** Google BigQuery (Standard SQL)
 
-## 1. Revenue by city
+This document describes the calculations used in the e-commerce analysis and how to interpret their results.
 
-**Current expression:** `SUM(totalTransactionRevenue) / 1000000`
+## Revenue by city
 
-- Confirm the field's original monetary unit and currency.
-- Check whether session-level revenue repeats across multiple source rows, which could inflate a row-level sum.
-- Verify whether the aggregation should occur at a session or transaction grain before grouping by city.
-- Scientific notation in BigQuery is a display convention, not a calculation error.
+**SQL measure:** `SUM(totalTransactionRevenue) / 1000000`
 
-## 2. Cart activity without checkout
+Revenue values are grouped by `city` and ranked from highest to lowest. The charts show the top ten cities; the SQL query includes all available cities.
 
-**Current method:** Counts distinct `visitId` values by `fullVisitorId` and filters visitors with action `'3'` but no action `'5'`.
+Because the source table can contain multiple records per visit, the measure represents a sum across source rows. Revenue units and repeated values should be checked before treating these totals as final transaction-level revenue.
 
-- Confirm the meaning of the `eCommerceAction_type` values.
-- Verify whether `visitId` uniquely identifies a session or must be combined with `fullVisitorId`.
-- This is a visitor-level list of qualifying activity, not a confirmed abandoned-cart percentage.
-- Only the aggregate result (**28,149 qualifying visitor records**) is public; the visitor-ID export is excluded.
+## Cart activity without checkout
 
-## 3. Transaction-session percentage
+**SQL method:** Group by `fullVisitorId`, count distinct `visitId` values, and filter for cart activity (`eCommerceAction_type = '3'`) without checkout activity (`eCommerceAction_type = '5'`).
 
-**Current method:** Distinct `visitId` values with `transactions = 1` and `eCommerceAction_type = '6'`, divided by all distinct `visitId` values.
+The output lists visitors matching the query's criteria. It does **not** calculate an overall cart-abandonment rate.
 
-- The query output is **4.48%** under this definition.
-- Validate session uniqueness and whether sessions with multiple transactions should count.
-- Verify that action type `'6'` represents the intended purchase event.
-- Compare against a session-level count before treating this as a standard conversion rate.
+The export contained **28,149 visitor records**. Only the aggregate count and a chart with anonymized labels are included publicly; visitor identifiers are not shared.
 
-## 4. Traffic-channel conversion
+## Transaction-session percentage
 
-**Current method:** Groups by `channelGrouping`, sums `transactions`, and computes a distinct-`visitId` percentage.
+**SQL measure:** Distinct `visitId` values satisfying `transactions = 1` and `eCommerceAction_type = '6'`, divided by all distinct `visitId` values, multiplied by 100.
 
-- Repeated transaction values on multiple product/event rows may overstate `SUM(transactions)`.
-- Use a consistent visitor-session key when validating conversion.
-- Confirm attribution and channel grouping semantics.
-- The exported rates are exploratory: Referral **11.89%**, Direct **6.54%**, Organic Search **1.56%**.
+The query returned **4.48%**.
 
-## 5. Top products by units sold
+This percentage uses `visitId` as its distinct-count key. If the identifier is reused across visitors, a composite visitor-session identifier would change the count. Sessions containing more than one transaction may also fall outside the query's current condition.
 
-**Current method:** `SUM(productQuantity)` grouped by `v2ProductName` for rows with action type `'6'`.
+## Traffic-channel conversion
 
-- Confirm that quantity values are not duplicated across repeated rows.
-- Validate that the action type corresponds to the desired completed-purchase definition.
-- Exported leaders include Maze Pen (**17,983**) and Google 22 oz Water Bottle (**16,221**) reported units.
+**SQL measures:**
+- `SUM(transactions)` by `channelGrouping`
+- `COUNT(DISTINCT visitId)` by channel
+- Percentage of qualifying transaction visits under the same conditional definition as above
 
-## Validation status
+Selected output percentages:
 
-The provided SQL scripts and exported results have been documented, but the queries were not independently rerun or reconciled against source-table grain during repository preparation. The visualizations show the exported outputs rather than validated financial or conversion KPIs.
+| Channel | Calculated rate |
+| --- | ---: |
+| Referral | 11.89% |
+| Direct | 6.54% |
+| Organic Search | 1.56% |
 
-**Next technical improvement:** Build a session-level base table using an appropriate composite session identifier, validate source field definitions, and recompute the revenue and conversion measures before updating the charts.
+These are the rates produced by the supplied query. Repeated transaction values across source rows and the distinct-session key can affect their interpretation.
+
+## Top products by reported units sold
+
+**SQL measure:** `SUM(productQuantity)` by `v2ProductName`, filtered to `eCommerceAction_type = '6'`, sorted in descending order, limited to ten products.
+
+The top two products in the exported results were:
+
+| Product | Reported units |
+| --- | ---: |
+| Maze Pen | 17,983 |
+| Google 22 oz Water Bottle | 16,221 |
+
+The calculation sums product quantities from rows matching the purchase-action filter. Counts depend on the source record structure and whether quantities repeat across rows.
+
+## Data and chart conventions
+
+The repository provides SQL scripts, exported result summaries, and SVG charts built from those results. The analyses are exploratory and the figures reflect the calculations in the supplied SQL, rather than independently reconciled financial or conversion KPIs. Session and transaction definitions should be considered when comparing these results with other reports.

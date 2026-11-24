@@ -1,6 +1,5 @@
--- Question: Which cities generated the highest reported revenue?
--- Transcribed from a BigQuery screenshot; not independently rerun.
--- Revenue calculation may need deduplication at the transaction grain.
+-- Revenue distribution by city using the dataset's reported transaction revenue.
+-- Validate monetary units and duplicate revenue values at the source-row grain.
 SELECT
     city,
     SUM(totalTransactionRevenue) / 1000000 AS total_revenue

@@ -1,5 +1,5 @@
--- Traffic channel breakdown as shown in screenshot.
--- SUM(transactions) may overcount transactions if repeated across multiple source rows.
+-- Explore transaction activity and calculated conversion by channel.
+-- Verify session uniqueness and possible repeated transaction values.
 SELECT
     channelGrouping,
     SUM(transactions) AS Total_transaction,
